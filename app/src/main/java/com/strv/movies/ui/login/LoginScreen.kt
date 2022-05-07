@@ -17,6 +17,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.strv.movies.R
+import com.strv.movies.ui.theme.buttonGradientColor
 
 
 @Composable
@@ -154,7 +156,7 @@ fun GradientButton(
 ) {
     var isClicked by remember { mutableStateOf(false) }
     val backgroundColor = animateColorAsState(
-        targetValue = if (isClicked) MaterialTheme.colors.primary else MaterialTheme.colors.secondary,
+        targetValue = if (isClicked) Color.Transparent else MaterialTheme.colors.secondary,
         animationSpec = tween(200)
     )
     Button(
@@ -174,44 +176,58 @@ fun GradientButton(
     ) {
         Box(
             modifier = Modifier
-                .background(SolidColor(backgroundColor.value))
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .background(
+                    Brush.horizontalGradient(
+                        listOf(
+                            MaterialTheme.colors.primary,
+                            buttonGradientColor
+                        )
+                    )
+                )
+                .fillMaxWidth(),
             contentAlignment = Center
         ) {
             Box(
-                modifier = Modifier.height(36.dp),
+                modifier = Modifier
+                    .background(SolidColor(backgroundColor.value))
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 16.dp),
                 contentAlignment = Center
             ) {
-                androidx.compose.animation.AnimatedVisibility(
-                    visible = !isClicked,
-                    enter = fadeIn(tween(100)) + expandVertically(
-                        tween(100)
-                    ),
-                    exit = fadeOut(tween(100)) + shrinkVertically(
-                        animationSpec = tween(100)
-                    )
+                Box(
+                    modifier = Modifier.height(36.dp),
+                    contentAlignment = Center
                 ) {
-                    Text(
-                        text = text.uppercase(),
-                        color = MaterialTheme.colors.onPrimary,
-                        style = MaterialTheme.typography.subtitle1
-                    )
-                }
-                androidx.compose.animation.AnimatedVisibility(
-                    visible = isClicked,
-                    enter = fadeIn(tween(400)) + expandVertically(
-                        tween(400)
-                    ),
-                    exit = fadeOut(tween(100)) + shrinkVertically(
-                        animationSpec = tween(100)
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_check),
-                        tint = MaterialTheme.colors.onPrimary,
-                        contentDescription = "Check success"
-                    )
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = !isClicked,
+                        enter = fadeIn(tween(100)) + expandVertically(
+                            tween(100)
+                        ),
+                        exit = fadeOut(tween(100)) + shrinkVertically(
+                            animationSpec = tween(100)
+                        )
+                    ) {
+                        Text(
+                            text = text.uppercase(),
+                            color = MaterialTheme.colors.onPrimary,
+                            style = MaterialTheme.typography.subtitle1
+                        )
+                    }
+                    androidx.compose.animation.AnimatedVisibility(
+                        visible = isClicked,
+                        enter = fadeIn(tween(400)) + expandVertically(
+                            tween(400)
+                        ),
+                        exit = fadeOut(tween(100)) + shrinkVertically(
+                            animationSpec = tween(100)
+                        )
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_check),
+                            tint = MaterialTheme.colors.onPrimary,
+                            contentDescription = "Check success"
+                        )
+                    }
                 }
             }
         }
