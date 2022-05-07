@@ -1,16 +1,21 @@
 package com.strv.movies.ui.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.strv.movies.R
+import com.strv.movies.ui.theme.buttonGradientColor
 
 @Composable
 fun LoginScreen() {
@@ -57,16 +62,17 @@ fun LoginScreen() {
             shape = MaterialTheme.shapes.medium,
             visualTransformation = PasswordVisualTransformation(),
         )
-        Button(
-            onClick = { /*TODO*/ },
-            shape = MaterialTheme.shapes.medium,
-            contentPadding = PaddingValues(16.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 24.dp)
-        ) {
-            Text(text = "Sign In".uppercase())
-        }
+        GradientButton(
+            text = "Sign in",
+            textColor = MaterialTheme.colors.onPrimary,
+            gradient = Brush.horizontalGradient(
+                colors = listOf(
+                    MaterialTheme.colors.primary,
+                    buttonGradientColor
+                )
+            ),
+            onClick = {}
+        )
         Text(
             text = "Forgot your password?",
             modifier = Modifier
@@ -74,5 +80,35 @@ fun LoginScreen() {
                 .fillMaxWidth(),
             textAlign = TextAlign.Center
         )
+    }
+}
+
+@Composable
+fun GradientButton(
+    text: String,
+    textColor: Color,
+    gradient: Brush,
+    onClick: () -> Unit
+) {
+    Button(
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color.Transparent
+        ),
+        contentPadding = PaddingValues(),
+        shape = MaterialTheme.shapes.medium,
+        onClick = { onClick() },
+        modifier = Modifier
+            .padding(top = 24.dp)
+            .fillMaxWidth(),
+    ) {
+        Box(
+            modifier = Modifier
+                .background(gradient)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = text.uppercase(), color = textColor)
+        }
     }
 }
