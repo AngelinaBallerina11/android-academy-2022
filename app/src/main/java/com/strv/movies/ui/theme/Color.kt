@@ -25,4 +25,4 @@ val md_theme_dark_surface = Color(0xFF1C1B1F)
 val md_theme_dark_onSurface = Color(0xFFE6E1E5)
 
 val buttonGradientColor = Color(0xFF43cea2)
-val buttonDisabledColor = Color(0xFF1F3670)
+val facebookButtonColor = Color(0xFF4267B2)
