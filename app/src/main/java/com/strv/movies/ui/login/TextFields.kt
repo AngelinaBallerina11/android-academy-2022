@@ -50,7 +50,7 @@ fun UsernameTextField(
                 .onFocusChanged {
                     if (!it.hasFocus && username.value.isNotBlank()) {
                         usernameError.value =
-                            !Patterns.EMAIL_ADDRESS.matcher(username.value).matches()
+                            !Patterns.EMAIL_ADDRESS.matcher(username.value.trim()).matches()
                     } else {
                         usernameError.value = false
                     }
@@ -90,7 +90,7 @@ fun PasswordTextField(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    val isError = password.value.length < 8
+                    val isError = password.value.trim().length < 8
                     passwordError.value = isError
                     if (!isError) keyboardController?.hide()
                 }
