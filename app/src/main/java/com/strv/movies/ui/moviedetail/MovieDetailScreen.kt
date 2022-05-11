@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -33,12 +35,15 @@ import com.strv.movies.model.MovieDetail
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun MovieDetail(movie: MovieDetail) {
+    val (savedProgress, setVideoProgress) = rememberSaveable {
+        mutableStateOf(0f)
+    }
     Column {
         MovieTrailerPlayer(
             videoId = OfflineMoviesProvider.getTrailer(movie.id).key,
-            progressSeconds = mutableStateOf(0f)
+            progressSeconds = savedProgress,
+            setProgress = setVideoProgress
         )
-
         Row {
             MoviePoster(movie = movie)
             MovieInfo(movie = movie)
@@ -47,26 +52,23 @@ fun MovieDetail(movie: MovieDetail) {
 }
 
 @Composable
-fun MovieTrailerPlayer(videoId: String, progressSeconds: MutableState<Float>) {
-    // This is the official way to access current context from Composable functions
+fun MovieTrailerPlayer(videoId: String, progressSeconds: Float, setProgress: (Float) -> Unit) {
     val context = LocalContext.current
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-
     val configuration = LocalConfiguration.current
-
     val youTubePlayer = remember(context) {
         YouTubePlayerView(context).apply {
             addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                override fun onReady(@NonNull youTubePlayer: YouTubePlayer) {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
                     if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                        youTubePlayer.loadVideo(videoId, progressSeconds.value)
+                        youTubePlayer.loadVideo(videoId, progressSeconds)
                     } else {
-                        youTubePlayer.cueVideo(videoId, progressSeconds.value)
+                        youTubePlayer.cueVideo(videoId, progressSeconds)
                     }
                 }
 
                 override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
-                    progressSeconds.value = second
+                    setProgress(second)
                 }
             })
         }
