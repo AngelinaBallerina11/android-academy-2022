@@ -1,6 +1,7 @@
 package com.strv.movies.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -10,6 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.strv.movies.data.OfflineMoviesProvider
 import com.strv.movies.ui.moviedetail.MovieDetail
+import com.strv.movies.ui.moviedetail.MovieDetailScreen
 import com.strv.movies.ui.movieslist.MoviesList
 import com.strv.movies.ui.navigation.MoviesDestinations.MOVIES_LIST
 import com.strv.movies.ui.navigation.MoviesDestinations.MOVIE_DETAIL
@@ -37,9 +39,7 @@ fun MoviesNavGraph(navController: NavHostController = rememberNavController()) {
                 }
             )
         ) {
-            it.arguments?.getInt(MOVIE_ID_KEY)?.let {
-                MovieDetail(movie = OfflineMoviesProvider.getMovieDetail(it))
-            }
+            MovieDetailScreen(hiltViewModel()) // hilt VM is scoped to a destination
         }
     }
 }

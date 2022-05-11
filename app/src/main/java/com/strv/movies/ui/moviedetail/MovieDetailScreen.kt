@@ -2,14 +2,13 @@ package com.strv.movies.ui.moviedetail
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.annotation.NonNull
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -31,6 +31,23 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import com.strv.movies.R
 import com.strv.movies.data.OfflineMoviesProvider
 import com.strv.movies.model.MovieDetail
+import com.strv.movies.ui.error.ErrorScreen
+import com.strv.movies.ui.loading.LoadingScreen
+
+@Composable
+fun MovieDetailScreen(
+    viewModel: MovieDetailViewModel = viewModel()
+) {
+    val viewState by viewModel.viewState.collectAsState()
+
+    if (viewState.isLoading) {
+        LoadingScreen()
+    } else if (!viewState.error.isNullOrBlank()) {
+        ErrorScreen(errorMessage = viewState.error!!)
+    } else {
+        viewState.movie?.let { MovieDetail(movie = it) } // state hoisting - moving state outside the function
+    }
+}
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
