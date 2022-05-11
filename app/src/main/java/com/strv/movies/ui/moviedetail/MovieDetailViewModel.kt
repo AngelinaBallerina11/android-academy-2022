@@ -48,4 +48,10 @@ class MovieDetailViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateVideoProgress(newProgress: Float) {
+        _viewState.update {
+            it.copy(videoProgress = newProgress)
+        }
+    }
 }

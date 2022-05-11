@@ -45,20 +45,24 @@ fun MovieDetailScreen(
     } else if (!viewState.error.isNullOrBlank()) {
         ErrorScreen(errorMessage = viewState.error!!)
     } else {
-        viewState.movie?.let { MovieDetail(movie = it) } // state hoisting - moving state outside the function
+        // state hoisting - moving state outside the function
+        viewState.movie?.let {
+            MovieDetail(
+                movie = it,
+                videoProgress = viewState.videoProgress,
+                setVideoProgress = viewModel::updateVideoProgress
+            )
+        }
     }
 }
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun MovieDetail(movie: MovieDetail) {
-    val (savedProgress, setVideoProgress) = rememberSaveable {
-        mutableStateOf(0f)
-    }
+fun MovieDetail(movie: MovieDetail, videoProgress: Float, setVideoProgress: (Float) -> Unit) {
     Column {
         MovieTrailerPlayer(
             videoId = OfflineMoviesProvider.getTrailer(movie.id).key,
-            progressSeconds = savedProgress,
+            progressSeconds = videoProgress,
             setProgress = setVideoProgress
         )
         Row {
