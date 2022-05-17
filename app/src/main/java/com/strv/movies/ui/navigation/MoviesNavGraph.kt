@@ -2,7 +2,6 @@ package com.strv.movies.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,7 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.strv.movies.data.OfflineMoviesProvider
-import com.strv.movies.ui.moviedetail.MovieDetail
+import com.strv.movies.ui.login.LoginScreen
 import com.strv.movies.ui.moviedetail.MovieDetailScreen
 import com.strv.movies.ui.movieslist.MoviesList
 import com.strv.movies.ui.navigation.MoviesDestinations.MOVIES_LIST
@@ -21,8 +20,17 @@ import com.strv.movies.ui.navigation.MoviesNavArguments.MOVIE_ID_KEY
 fun MoviesNavGraph(navController: NavHostController = rememberNavController()) {
     NavHost(
         navController = navController,
-        startDestination = MOVIES_LIST
+        startDestination = LoginDestinations.LOGIN
     ) {
+        composable(LoginDestinations.LOGIN) {
+            LoginScreen(onLoginClick = {
+                navController.navigate(MOVIES_LIST) {
+                    popUpTo(LoginDestinations.LOGIN) {
+                        inclusive = true
+                    }
+                }
+            })
+        }
         composable(MOVIES_LIST) {
             MoviesList(
                 movies = OfflineMoviesProvider.getMovies(),

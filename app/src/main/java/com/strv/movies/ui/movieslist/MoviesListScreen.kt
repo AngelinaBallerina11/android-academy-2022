@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+
 package com.strv.movies.ui.movieslist
 
 import androidx.compose.animation.AnimatedVisibility
@@ -9,9 +11,9 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -37,7 +39,6 @@ fun MovieItem(movie: Movie, modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun MoviesList(
     movies: List<Movie>,
@@ -45,7 +46,7 @@ fun MoviesList(
 ) {
     LazyVerticalGrid(
         modifier = Modifier.padding(8.dp),
-        cells = GridCells.Fixed(2)
+        columns = GridCells.Fixed(2)
     ) {
         items(movies) { movie ->
             val state = remember {

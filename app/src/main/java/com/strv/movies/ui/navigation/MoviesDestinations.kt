@@ -4,3 +4,7 @@ object MoviesDestinations {
     const val MOVIES_LIST = "movies_list"
     const val MOVIE_DETAIL = "movie_detail"
 }
+
+object LoginDestinations {
+    const val LOGIN = "login"
+}
