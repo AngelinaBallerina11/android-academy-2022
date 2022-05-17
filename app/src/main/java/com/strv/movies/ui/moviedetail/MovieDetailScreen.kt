@@ -39,7 +39,6 @@ fun MovieDetailScreen(
     viewModel: MovieDetailViewModel = viewModel()
 ) {
     val viewState by viewModel.viewState.collectAsState()
-
     if (viewState.isLoading) {
         LoadingScreen()
     } else if (!viewState.error.isNullOrBlank()) {
