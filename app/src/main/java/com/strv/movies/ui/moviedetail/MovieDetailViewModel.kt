@@ -3,20 +3,22 @@ package com.strv.movies.ui.moviedetail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.strv.movies.data.OfflineMoviesProvider
+import com.strv.movies.data.MovieRepository
+import com.strv.movies.extension.Either
 import com.strv.movies.ui.navigation.MoviesNavArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.random.Random
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val repository: MovieRepository
 ) : ViewModel() {
 
     private val movieId =
@@ -28,16 +30,41 @@ class MovieDetailViewModel @Inject constructor(
     val viewState = _viewState.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            delay(2000)
-            _viewState.update {
-                val randomNumber = Random.nextInt(10)
-                if (randomNumber < 3) {
-                    MovieDetailViewState(error = "Something went wrong!")
-                } else {
-                    MovieDetailViewState(
-                        movie = OfflineMoviesProvider.getMovieDetail(movieId)
-                    )
+        viewModelScope.launch(Dispatchers.IO) {
+            val detailDeferred = async {
+                repository.getMovieDetail(movieId)
+            }
+            val trailerDeferred = async {
+                repository.getTrailer(movieId)
+            }
+            val detail = detailDeferred.await()
+            val trailer = trailerDeferred.await()
+            when {
+                detail is Either.Error -> {
+                    _viewState.update { state ->
+                        state.copy(
+                            error = detail.error,
+                            loading = false
+                        )
+                    }
+                }
+                trailer is Either.Error -> {
+                    _viewState.update { state ->
+                        state.copy(
+                            error = trailer.error,
+                            loading = false
+                        )
+                    }
+                }
+                trailer is Either.Value && detail is Either.Value -> {
+                    _viewState.update { state ->
+                        state.copy(
+                            error = null,
+                            loading = false,
+                            movie = detail.value,
+                            trailerKey = trailer.value.key
+                        )
+                    }
                 }
             }
         }

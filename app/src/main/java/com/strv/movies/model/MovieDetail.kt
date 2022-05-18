@@ -1,31 +1,42 @@
 package com.strv.movies.model
 
+import com.squareup.moshi.Json
+
+data class MovieDetailDto(
+    @Json(name = "id")
+    val id: Int,
+    @Json(name = "title")
+    val title: String,
+    @Json(name = "overview")
+    val overview: String,
+    @Json(name = "release_date")
+    val releaseDate: String,
+    @Json(name = "poster_path")
+    val posterPath: String,
+    @Json(name = "revenue")
+    val revenue: Int,
+    @Json(name = "runtime")
+    val runtime: Int
+) {
+    fun toDomain() = MovieDetail(
+        id,
+        title,
+        overview,
+        releaseDate.substringBefore("-"),
+        posterPath,
+        revenue,
+        runtime
+    )
+}
+
 data class MovieDetail(
     val id: Int,
-    val adult: Boolean,
-    val backDropPath: String,
-    val belongsToCollection: Collection?,
-    val budget: Int,
-    val genres: List<Genre>,
-    val homepage: String,
-    val imdbId: String,
-    val originalLanguage: String,
-    val originalTitle: String,
-    val overview: String,
-    val popularity: Double,
-    val posterPath: String,
-    val productionCompanies: List<ProductionCompany>,
-    val productionCountries: List<ProductionCountry>,
-    val releaseDate: String,
-    val revenue: Int,
-    val runtime: Int,
-    val spokenLanguages: List<SpokenLanguage>,
-    val status: String,
-    val tagline: String,
     val title: String,
-    val video: Boolean,
-    val voteAverage: Double,
-    val voteCount: Int
+    val overview: String,
+    val releaseYear: String,
+    val posterPath: String,
+    val revenue: Int,
+    val runtime: Int
 )
 
 data class Collection(

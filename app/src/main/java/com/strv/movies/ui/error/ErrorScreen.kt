@@ -23,7 +23,7 @@ fun ErrorScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(20.dp),
+            .padding(14.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
