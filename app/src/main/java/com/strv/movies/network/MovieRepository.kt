@@ -65,13 +65,15 @@ class MovieRepository @Inject constructor(
     }
 
     fun observeMovies(): Flow<List<Movie>> =
-        moviesDao.observeMovies().map { list -> list.map { it.toDomain() } }
+        moviesDao.observeMovies()
+            .map { list -> list.map { it.toDomain() }.sortedByDescending { it.averageVote } }
 }
 
 fun MovieEntity.toDomain() = Movie(
     id = id,
     title = title,
-    posterPath = posterPath
+    posterPath = posterPath,
+    averageVote = averageVote
 )
 
-private fun MovieDTO.toEntity() = MovieEntity(id, title, posterPath)
+private fun MovieDTO.toEntity() = MovieEntity(id, title, posterPath, averageVote)

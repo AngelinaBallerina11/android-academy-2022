@@ -9,5 +9,6 @@ data class MovieEntity(
     @PrimaryKey
     @ColumnInfo(name = "movie_id") val id: Int,
     @ColumnInfo(name = "title") val title: String,
-    @ColumnInfo(name = "poster_path") val posterPath: String
+    @ColumnInfo(name = "poster_path") val posterPath: String,
+    @ColumnInfo(name = "vote") val averageVote: Float
 )
