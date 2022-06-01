@@ -3,9 +3,12 @@ package com.strv.movies.data.mapper
 import com.strv.movies.data.entity.GenreEntity
 import com.strv.movies.data.entity.MovieDetailEntity
 import com.strv.movies.data.entity.MovieDetailWithGenres
+import com.strv.movies.data.entity.MovieEntity
 import com.strv.movies.data.entity.MovieGenreEntity
 import com.strv.movies.model.Genre
 import com.strv.movies.model.GenreDTO
+import com.strv.movies.model.Movie
+import com.strv.movies.model.MovieDTO
 import com.strv.movies.model.MovieDetail
 import com.strv.movies.model.MovieDetailDTO
 import javax.inject.Inject

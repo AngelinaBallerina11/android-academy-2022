@@ -38,12 +38,12 @@ class MoviesListViewModel @Inject constructor(
             },
             { movieList ->
                 Log.e("TAG", "MovieListSuccess: ${movieList.size}")
-                _viewState.update {
-                    MoviesListViewState(
-                        movies = movieList
-                    )
-                }
             }
         )
+        movieRepository.observeMovies().collect { movies ->
+            _viewState.update {
+                MoviesListViewState(movies)
+            }
+        }
     }
 }
