@@ -11,6 +11,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -61,12 +62,14 @@ fun MovieItem(movie: Movie, modifier: Modifier = Modifier) {
         modifier = modifier.padding(all = 8.dp)
     ) {
         Box(
-            contentAlignment = Alignment.BottomStart
+            contentAlignment = Alignment.BottomStart,
+
         ) {
             AsyncImage(
                 contentScale = ContentScale.FillBounds,
                 model = "https://image.tmdb.org/t/p/h632${movie.posterPath}",
-                contentDescription = stringResource(id = R.string.movie_image)
+                contentDescription = stringResource(id = R.string.movie_image),
+                modifier = Modifier.fillMaxSize()
             )
             Card(
                 backgroundColor = MaterialTheme.colors.secondary
