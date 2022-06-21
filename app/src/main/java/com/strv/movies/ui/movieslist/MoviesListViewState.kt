@@ -1,6 +1,6 @@
 package com.strv.movies.ui.movieslist
 
-import com.strv.movies.model.Movie
+import com.strv.movies.domain.model.Movie
 
 data class MoviesListViewState(
     val movies: List<Movie> = emptyList(),

@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.strv.movies.extension.fold
-import com.strv.movies.model.MovieDetail
-import com.strv.movies.network.MovieRepository
+import com.strv.movies.domain.model.MovieDetail
+import com.strv.movies.data.MovieRepository
+import com.strv.movies.domain.fold
 import com.strv.movies.ui.navigation.MoviesNavArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

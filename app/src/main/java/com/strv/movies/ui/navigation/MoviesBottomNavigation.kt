@@ -13,7 +13,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.strv.movies.database.AuthDataStore
+import com.strv.movies.data.database.AuthDataStore
 
 @Composable
 fun MoviesBottomNavigation(
@@ -34,10 +34,10 @@ fun MoviesBottomNavigation(
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                 onClick = {
                     // Uncomment this to require user to be logged to open profile screen
-//                    if (screen is BottomNavigationDestinations.UserProfile && isAuthenticated.not()) {
-//                        navController.navigate(MoviesDestinations.LOGIN_ROUTE)
-//                        return@BottomNavigationItem
-//                    }
+                    if (screen is BottomNavigationDestinations.UserProfile && isAuthenticated.not()) {
+                        navController.navigate(MoviesDestinations.LOGIN_ROUTE)
+                        return@BottomNavigationItem
+                    }
                     navController.navigate(screen.route) {
 
                         // Pop up to the start destination of the graph to
