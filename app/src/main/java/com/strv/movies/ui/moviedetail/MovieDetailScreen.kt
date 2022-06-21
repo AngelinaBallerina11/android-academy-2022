@@ -29,9 +29,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import com.strv.movies.R
-import com.strv.movies.data.OfflineMoviesProvider
-import com.strv.movies.model.Genre
-import com.strv.movies.model.MovieDetail
+import com.strv.movies.data.database.data.OfflineMoviesProvider
+import com.strv.movies.domain.model.Genre
+import com.strv.movies.domain.model.MovieDetail
 import com.strv.movies.ui.error.ErrorScreen
 import com.strv.movies.ui.loading.LoadingScreen
 

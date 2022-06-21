@@ -2,8 +2,8 @@ package com.strv.movies.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.strv.movies.extension.fold
-import com.strv.movies.network.auth.AuthRepository
+import com.strv.movies.data.AuthRepository
+import com.strv.movies.domain.fold
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

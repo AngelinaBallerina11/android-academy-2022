@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.strv.movies.R
-import com.strv.movies.model.Movie
+import com.strv.movies.domain.model.Movie
 import com.strv.movies.ui.error.ErrorScreen
 import com.strv.movies.ui.loading.LoadingScreen
 
