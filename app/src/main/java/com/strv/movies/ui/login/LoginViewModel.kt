@@ -1,6 +1,5 @@
-package com.strv.movies.ui.auth
+package com.strv.movies.ui.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.strv.movies.extension.fold
@@ -12,16 +11,22 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
-    fun login(onSuccess: () -> Unit) {
+    fun login(
+        username: String,
+        password: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
         viewModelScope.launch {
             authRepository.logIn(
-                username = "YOUR NAME HERE",
-                password = "YOUR PASSWORD HERE"
+                username = username,
+                password = password
             ).fold(
                 { error ->
-                    Log.d("TAG", "Login failed - ${error.name}")
+                    println("AAA: " + "Login failed - ${error.name}")
+                    onFailure(error.name)
                 },
                 {
                     onSuccess()
