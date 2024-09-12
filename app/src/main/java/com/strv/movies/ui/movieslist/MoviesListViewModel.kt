@@ -8,6 +8,7 @@ import com.strv.movies.network.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,12 +39,13 @@ class MoviesListViewModel @Inject constructor(
             },
             { movieList ->
                 Log.e("TAG", "MovieListSuccess: ${movieList.size}")
-                _viewState.update {
-                    MoviesListViewState(
-                        movies = movieList
-                    )
-                }
             }
         )
+        movieRepository.observeMovies().collect { movies ->
+            if (movies.isEmpty()) return@collect
+            _viewState.update {
+                MoviesListViewState(movies)
+            }
+        }
     }
 }

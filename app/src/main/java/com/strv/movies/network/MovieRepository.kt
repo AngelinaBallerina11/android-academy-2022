@@ -2,6 +2,7 @@ package com.strv.movies.network
 
 import androidx.room.withTransaction
 import com.strv.movies.data.dao.MoviesDao
+import com.strv.movies.data.entity.MovieEntity
 import com.strv.movies.data.mapper.MovieDetailMapper
 import com.strv.movies.data.mapper.MovieMapper
 import com.strv.movies.data.mapper.toDomain
@@ -9,6 +10,7 @@ import com.strv.movies.data.mapper.toEntity
 import com.strv.movies.database.MoviesDatabase
 import com.strv.movies.extension.Either
 import com.strv.movies.model.Movie
+import com.strv.movies.model.MovieDTO
 import com.strv.movies.model.MovieDetail
 import com.strv.movies.model.MovieDetailDTO
 import kotlinx.coroutines.flow.Flow
@@ -38,10 +40,15 @@ class MovieRepository @Inject constructor(
     suspend fun getPopularMovies(): Either<String, List<Movie>> {
         return try {
             val popularMovies = api.getPopularMovies()
+            storeMovies(popularMovies.results)
             Either.Value(popularMovies.results.map { movieMapper.map(it) })
         } catch (exception: Throwable) {
             Either.Error(exception.localizedMessage ?: "Network error")
         }
+    }
+
+    private suspend fun storeMovies(movies: List<MovieDTO>) {
+        moviesDao.insertMovies(movies.map { it.toEntity() })
     }
 
     fun observeMovieDetail(movieId: Int): Flow<MovieDetail?> =
@@ -56,4 +63,17 @@ class MovieRepository @Inject constructor(
             moviesDao.insertMovieGenres(movie.genres.map { it.toEntity(movie.id) })
         }
     }
+
+    fun observeMovies(): Flow<List<Movie>> =
+        moviesDao.observeMovies()
+            .map { list -> list.map { it.toDomain() }.sortedByDescending { it.averageVote } }
 }
+
+fun MovieEntity.toDomain() = Movie(
+    id = id,
+    title = title,
+    posterPath = posterPath,
+    averageVote = averageVote
+)
+
+private fun MovieDTO.toEntity() = MovieEntity(id, title, posterPath, averageVote)

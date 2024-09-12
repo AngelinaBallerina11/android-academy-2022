@@ -5,7 +5,8 @@ import com.squareup.moshi.Json
 data class Movie(
     val id: Int,
     val title: String,
-    val posterPath: String
+    val posterPath: String,
+    val averageVote: Float
 )
 
 data class MovieDTO(
@@ -14,7 +15,9 @@ data class MovieDTO(
     @Json(name = "title")
     val title: String,
     @Json(name = "poster_path")
-    val posterPath: String
+    val posterPath: String,
+    @Json(name = "vote_average")
+    val averageVote: Float
 )
 
 // We get data in a way that pagination can be implemented later on :)

@@ -11,5 +11,6 @@ class MovieMapper @Inject constructor() : Mapper<MovieDTO, Movie> {
             id = from.id,
             title = from.title,
             posterPath = from.posterPath,
+            averageVote = from.averageVote
         )
 }

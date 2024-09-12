@@ -2,10 +2,19 @@ package com.strv.movies.ui.moviedetail
 
 import android.content.res.Configuration
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -124,6 +133,7 @@ fun MoviePoster(movie: MovieDetail) {
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieInfo(movie: MovieDetail) {
     Column {
@@ -141,5 +151,39 @@ fun MovieInfo(movie: MovieDetail) {
                 textAlign = TextAlign.Justify
             )
         }
+        if (movie.genres.isNotEmpty()) {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                cells = GridCells.Fixed(3)
+            ) {
+                items(movie.genres, itemContent = {
+                    Chip(title = it.name)
+                })
+            }
+        }
+    }
+}
+
+@Composable
+fun Chip(title: String) {
+    Surface(
+        modifier = Modifier
+            .padding(8.dp),
+        elevation = 2.dp,
+        shape = RoundedCornerShape(16.dp),
+        border = BorderStroke(
+            width = 1.dp,
+            color = MaterialTheme.colors.secondary
+        ),
+        color = MaterialTheme.colors.secondary
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            textAlign = TextAlign.Center
+        )
     }
 }
